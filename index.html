@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AARADHYA CLASSES - Complete Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .header-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .card-custom {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-bottom: 1rem;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #667eea;
+        }
+        .nav-pills .nav-link {
+            color: #667eea;
+            margin: 0 2px;
+        }
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .btn-whatsapp {
+            background-color: #25d366;
+            border-color: #25d366;
+            color: white;
+        }
+        .btn-whatsapp:hover {
+            background-color: #128c7e;
+            border-color: #128c7e;
+            color: white;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .alert-floating {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+        }
+        .report-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .attendance-badge {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header-section">
+    <div class="container text-center">
+        <h1><i class="fas fa-graduation-cap"></i> AARADHYA CLASSES</h1>
+        <p class="lead">Complete Tuition Management System</p>
+        <p class="mb-0">Managed by <strong>Snehal Khairnar</strong></p>
+        <small class="opacity-75">Student Management | Fee Tracking | Attendance | Reports | WhatsApp Integration</small>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Navigation -->
+    <ul class="nav nav-pills justify-content-center mb-4" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="dashboard-tab" data-bs-toggle="pill" data-bs-target="#dashboard" type="button" role="tab">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="students-tab" data-bs-toggle="pill" data-bs-target="#students" type="button" role="tab">
+                <i class="fas fa-users"></i> Students
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="courses-tab" data-bs-toggle="pill" data-bs-target="#courses" type="button" role="tab">
+                <i class="fas fa-book"></i> Courses
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="fees-tab" data-bs-toggle="pill" data-bs-target="#fees" type="button" role="tab">
+                <i class="fas fa-money-bill"></i> Fees
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="attendance-tab" data-bs-toggle="pill" data-bs-target="#attendance" type="button" role="tab">
+                <i class="fas fa-calendar-check"></i> Attendance
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="reports-tab" data-bs-toggle="pill" data-bs-target="#reports" type="button" role="tab">
+                <i class="fas fa-chart-bar"></i> Reports
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="pills-tabContent">
+        
+        <!-- Dashboard Tab -->
+        <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <i class="fas fa-users stat-icon text-primary"></i>
+                        <h3 id="totalStudents">0</h3>
+                        <p class="mb-0">Total Students</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <i class="fas fa-book stat-icon text-success"></i>
+                        <h3 id="totalCourses">0</h3>
+                        <p class="mb-0">Total Courses</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <i class="fas fa-money-bill stat-icon text-warning"></i>
+                        <h3 id="pendingFees">0</h3>
+                        <p class="mb-0">Pending Fees</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check stat-icon text-info"></i>
+                        <h3 id="todayPresent">0</h3>
+                        <p class="mb-0">Present Today</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-clock"></i> Recent Activities</h5>
+                        </div>
+                        <div class="card-body" id="recentActivities">
+                            <!-- Recent activities will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-exclamation-triangle"></i> Fee Reminders Needed</h5>
+                        </div>
+                        <div class="card-body" id="feeReminders">
+                            <!-- Fee reminders will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students Tab -->
+        <div class="tab-pane fade" id="students" role="tabpanel">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-user-plus"></i> Add New Student</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="studentForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" id="studentName" placeholder="Enter full name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Contact Number *</label>
+                                    <input type="tel" class="form-control" id="studentContact" placeholder="10-digit mobile number" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Parent Contact (Optional)</label>
+                                    <input type="tel" class="form-control" id="parentContact" placeholder="Parent's mobile number">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Course *</label>
+                                    <select class="form-select" id="studentCourse" required>
+                                        <option value="">Select Course</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Date of Joining *</label>
+                                    <input type="date" class="form-control" id="joiningDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Date of Leaving (Optional)</label>
+                                    <input type="date" class="form-control" id="leavingDate">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-save"></i> Add Student
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card card-custom">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-list"></i> Student List</h5>
+                            <div>
+                                <input type="text" class="form-control" id="studentSearch" placeholder="Search students...">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Contact</th>
+                                            <th>Course</th>
+                                            <th>Joining Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="studentTableBody">
+                                        <!-- Students will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Courses Tab -->
+        <div class="tab-pane fade" id="courses" role="tabpanel">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-plus"></i> Add New Course</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="courseForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Course Name *</label>
+                                    <input type="text" class="form-control" id="courseName" placeholder="Enter course name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Monthly Fee (₹) *</label>
+                                    <input type="number" class="form-control" id="courseFee" placeholder="Enter monthly fee" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Course Description</label>
+                                    <textarea class="form-control" id="courseDescription" rows="3" placeholder="Brief description of the course"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-save"></i> Add Course
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-list"></i> Course List</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Course Name</th>
+                                            <th>Monthly Fee</th>
+                                            <th>Students Enrolled</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="courseTableBody">
+                                        <!-- Courses will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fees Tab -->
+        <div class="tab-pane fade" id="fees" role="tabpanel">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-money-bill"></i> Mark Fee Payment</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="feeForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Student *</label>
+                                    <select class="form-select" id="feeStudent" required>
+                                        <option value="">Select Student</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Month *</label>
+                                    <select class="form-select" id="feeMonth" required>
+                                        <option value="">Select Month</option>
+                                        <option value="January">January</option>
+                                        <option value="February">February</option>
+                                        <option value="March">March</option>
+                                        <option value="April">April</option>
+                                        <option value="May">May</option>
+                                        <option value="June">June</option>
+                                        <option value="July">July</option>
+                                        <option value="August">August</option>
+                                        <option value="September">September</option>
+                                        <option value="October">October</option>
+                                        <option value="November">November</option>
+                                        <option value="December">December</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Year *</label>
+                                    <input type="number" class="form-control" id="feeYear" placeholder="Year" value="2025" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Amount Paid (₹) *</label>
+                                    <input type="number" class="form-control" id="feeAmount" placeholder="Amount paid" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="fas fa-check"></i> Mark as Paid
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-list"></i> Fee Status & WhatsApp Reminders</h5>
+                        </div>
+                        <div class="card-body" id="feeStatusList">
+                            <!-- Fee status will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Tab -->
+        <div class="tab-pane fade" id="attendance" role="tabpanel">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card card-custom">
+                        <div class="card-header">
+                            <h5><i class="fas fa-calendar-check"></i> Mark Attendance</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="attendanceForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Date *</label>
+                                    <input type="date" class="form-control" id="attendanceDate" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Student *</label>
+                                    <select class="form-select" id="attendanceStudent" required>
+                                        <option value="">Select Student</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status *</label>
+                                    <select class="form-select" id="attendanceStatus" required>
+                                        <option value="">Select Status</option>
+                                        <option value="present">Present</option>
+                                        <option value="absent">Absent</option>
+                                        <option value="late">Late</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-info w-100">
+                                    <i class="fas fa-save"></i> Mark Attendance
+                                </button>
+                            </form>
+
+                            <hr>
+                            
+                            <div class="mt-3">
+                                <h6>Bulk Attendance</h6>
+                                <div class="mb-2">
+                                    <input type="date" class="form-control" id="bulkAttendanceDate">
+                                </div>
+                                <button class="btn btn-outline-primary btn-sm w-100" onclick="markAllPresent()">
+                                    <i class="fas fa-check-double"></i> Mark All Present
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card card-custom">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-list"></i> Attendance Records</h5>
+                            <div>
+                                <input type="date" class="form-control" id="attendanceFilter" onchange="filterAttendance()">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Student</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attendanceTableBody">
+                                        <!-- Attendance will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div class="tab-pane fade" id="reports" role="tabpanel">
+            <div class="card card-custom">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar"></i> Comprehensive Student Reports</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <select class="form-select" id="reportStudent">
+                                <option value="">Select Student for Report</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" onclick="generateReport()">
+                                <i class="fas fa-file-alt"></i> Generate Report
+                            </button>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-success" onclick="generateAllReports()">
+                                <i class="fas fa-files"></i> All Reports
+                            </button>
+                        </div>
+                    </div>
+                    <div id="reportContent">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-file-alt fa-3x mb-3"></i>
+                            <p>Select a student and click "Generate Report" to view detailed information</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- WhatsApp Share Modal -->
+<div class="modal fade" id="whatsappModal" tabindex="-1" aria-labelledby="whatsappModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="whatsappModalLabel">
+                    <i class="fab fa-whatsapp text-success"></i> Share via WhatsApp
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Choose how to share:</p>
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success" id="shareToParent">
+                        <i class="fas fa-user-friends"></i> Send to Parent
+                    </button>
+                    <button class="btn btn-outline-success" id="shareGeneral">
+                        <i class="fas fa-share"></i> Share with Anyone
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Data Storage
+let students = JSON.parse(localStorage.getItem('students')) || [];
+let courses = JSON.parse(localStorage.getItem('courses')) || [];
+let fees = JSON.parse(localStorage.getItem('fees')) || [];
+let attendance = JSON.parse(localStorage.getItem('attendance')) || [];
+
+// Global variables for WhatsApp sharing
+let currentReportData = null;
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+    initializeSampleData();
+    loadCourses();
+    loadStudents();
+    loadFeeStatus();
+    loadAttendance();
+    updateDashboard();
+    setTodayDate();
+    
+    // Set current month/year for fees
+    const now = new Date();
+    document.getElementById('feeMonth').value = now.toLocaleString('default', { month: 'long' });
+    document.getElementById('feeYear').value = now.getFullYear();
+});
+
+function setTodayDate() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('attendanceDate').value = today;
+    document.getElementById('bulkAttendanceDate').value = today;
+    document.getElementById('joiningDate').value = today;
+    document.getElementById('attendanceFilter').value = today;
+}
+
+// Initialize sample data if none exists
+function initializeSampleData() {
+    if (courses.length === 0) {
+        courses = [
+            { id: 1, name: 'Mathematics Class 10', fee: 2000, description: 'Complete CBSE Class 10 Mathematics curriculum' },
+            { id: 2, name: 'Physics Class 12', fee: 2500, description: 'Physics for Class 12 CBSE/State Board' },
+            { id: 3, name: 'Chemistry Class 12', fee: 2500, description: 'Comprehensive Chemistry for Class 12' },
+            { id: 4, name: 'Mathematics Class 12', fee: 2800, description: 'Advanced Mathematics for Class 12' }
+        ];
+        localStorage.setItem('courses', JSON.stringify(courses));
+    }
+}
+
+// Course Management
+document.getElementById('courseForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const courseName = document.getElementById('courseName').value.trim();
+    const courseFee = parseFloat(document.getElementById('courseFee').value);
+    const courseDescription = document.getElementById('courseDescription').value.trim();
+    
+    if (!courseName || !courseFee) {
+        showAlert('Please fill all required fields!', 'warning');
+        return;
+    }
+    
+    const course = {
+        id: Date.now(),
+        name: courseName,
+        fee: courseFee,
+        description: courseDescription || ''
+    };
+    
+    courses.push(course);
+    localStorage.setItem('courses', JSON.stringify(courses));
+    loadCourses();
+    updateDashboard();
+    this.reset();
+    showAlert('Course added successfully!', 'success');
+});
+
+function loadCourses() {
+    const courseTableBody = document.getElementById('courseTableBody');
+    const studentCourseSelect = document.getElementById('studentCourse');
+    
+    courseTableBody.innerHTML = '';
+    studentCourseSelect.innerHTML = '<option value="">Select Course</option>';
+    
+    courses.forEach(course => {
+        const enrolledStudents = students.filter(s => s.courseId === course.id).length;
+        
+        // Table row
+        const row = `
+            <tr>
+                <td>
+                    <strong>${course.name}</strong>
+                    ${course.description ? `<br><small class="text-muted">${course.description}</small>` : ''}
+                </td>
+                <td>₹${course.fee.toLocaleString()}</td>
+                <td><span class="badge bg-info">${enrolledStudents} students</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary" onclick="editCourse(${course.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteCourse(${course.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        courseTableBody.innerHTML += row;
+        
+        // Select option
+        const option = `<option value="${course.id}" data-fee="${course.fee}">${course.name} (₹${course.fee})</option>`;
+        studentCourseSelect.innerHTML += option;
+    });
+}
+
+function deleteCourse(id) {
+    const enrolledStudents = students.filter(s => s.courseId === id).length;
+    
+    if (enrolledStudents > 0) {
+        showAlert('Cannot delete course with enrolled students!', 'error');
+        return;
+    }
+    
+    if (confirm('Are you sure you want to delete this course?')) {
+        courses = courses.filter(course => course.id !== id);
+        localStorage.setItem('courses', JSON.stringify(courses));
+        loadCourses();
+        showAlert('Course deleted successfully!', 'warning');
+    }
+}
+
+// Student Management
+document.getElementById('studentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const studentName = document.getElementById('studentName').value.trim();
+    const studentContact = document.getElementById('studentContact').value.trim();
+    const parentContact = document.getElementById('parentContact').value.trim();
+    const studentCourse = document.getElementById('studentCourse').value;
+    const joiningDate = document.getElementById('joiningDate').value;
+    const leavingDate = document.getElementById('leavingDate').value;
+    
+    if (!studentName || !studentContact || !studentCourse || !joiningDate) {
+        showAlert('Please fill all required fields!', 'warning');
+        return;
+    }
+    
+    // Validate phone number (10 digits)
+    if (!/^\d{10}$/.test(studentContact)) {
+        showAlert('Please enter a valid 10-digit contact number!', 'error');
+        return;
+    }
+    
+    const student = {
+        id: Date.now(),
+        name: studentName,
+        contact: studentContact,
+        parentContact: parentContact,
+        courseId: parseInt(studentCourse),
+        joiningDate: joiningDate,
+        leavingDate: leavingDate,
+        status: leavingDate ? 'Inactive' : 'Active'
+    };
+    
+    students.push(student);
+    localStorage.setItem('students', JSON.stringify(students));
+    loadStudents();
+    updateDashboard();
+    this.reset();
+    showAlert('Student added successfully!', 'success');
+});
+
+function loadStudents() {
+    const studentTableBody = document.getElementById('studentTableBody');
+    const feeStudentSelect = document.getElementById('feeStudent');
+    const attendanceStudentSelect = document.getElementById('attendanceStudent');
+    const reportStudentSelect = document.getElementById('reportStudent');
+    
+    studentTableBody.innerHTML = '';
+    feeStudentSelect.innerHTML = '<option value="">Select Student</option>';
+    attendanceStudentSelect.innerHTML = '<option value="">Select Student</option>';
+    reportStudentSelect.innerHTML = '<option value="">Select Student for Report</option>';
+    
+    // Filter students based on search
+    const searchTerm = document.getElementById('studentSearch')?.value.toLowerCase() || '';
+    const filteredStudents = students.filter(student => 
+        student.name.toLowerCase().includes(searchTerm) ||
+        student.contact.includes(searchTerm)
+    );
+    
+    filteredStudents.forEach(student => {
+        const course = courses.find(c => c.id === student.courseId);
+        const courseName = course ? course.name : 'N/A';
+        
+        const statusBadge = student.status === 'Active' ? 
+            '<span class="badge bg-success">Active</span>' : 
+            '<span class="badge bg-secondary">Inactive</span>';
+        
+        // Table row
+        const row = `
+            <tr>
+                <td><strong>${student.name}</strong></td>
+                <td>${student.contact}</td>
+                <td>${courseName}</td>
+                <td>${formatDate(student.joiningDate)}</td>
+                <td>${statusBadge}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-info" onclick="viewStudentDetails(${student.id})">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="editStudent(${student.id})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${student.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        studentTableBody.innerHTML += row;
+        
+        // Select options (only for active students)
+        if (student.status === 'Active') {
+            const option = `<option value="${student.id}">${student.name} (${student.contact})</option>`;
+            feeStudentSelect.innerHTML += option;
+            attendanceStudentSelect.innerHTML += option;
+        }
+        
+        // Report select (all students)
+        const reportOption = `<option value="${student.id}">${student.name}</option>`;
+        reportStudentSelect.innerHTML += option;
+    });
+}
+
+function deleteStudent(id) {
+    if (confirm('Are you sure you want to delete this student? This will also remove all their attendance and fee records.')) {
+        students = students.filter(student => student.id !== id);
+        fees = fees.filter(fee => fee.studentId !== id);
+        attendance = attendance.filter(att => att.studentId !== id);
+        
+        localStorage.setItem('students', JSON.stringify(students));
+        localStorage.setItem('fees', JSON.stringify(fees));
+        localStorage.setItem('attendance', JSON.stringify(attendance));
+        
+        loadStudents();
+        loadFeeStatus();
+        loadAttendance();
+        updateDashboard();
+        showAlert('Student deleted successfully!', 'warning');
+    }
+}
+
+// Search functionality
+document.getElementById('studentSearch')?.addEventListener('input', function() {
+    loadStudents();
+});
+
+// Fee Management
+document.getElementById('feeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const feeStudent = document.getElementById('feeStudent').value;
+    const feeMonth = document.getElementById('feeMonth').value;
+    const feeYear = document.getElementById('feeYear').value;
+    const feeAmount = document.getElementById('feeAmount').value;
+    
+    if (!feeStudent || !feeMonth || !feeYear || !feeAmount) {
+        showAlert('Please fill all required fields!', 'warning');
+        return;
+    }
+    
+    // Check if fee already exists for this student and month
+    const existingFeeIndex = fees.findIndex(f => 
+        f.studentId === parseInt(feeStudent) && 
+        f.month === feeMonth && 
+        f.year === parseInt(feeYear)
+    );
+    
+    const fee = {
+        id: existingFeeIndex >= 0 ? fees[existingFeeIndex].id : Date.now(),
+        studentId: parseInt(feeStudent),
+        month: feeMonth,
+        year: parseInt(feeYear),
+        amount: parseFloat(feeAmount),
+        paid: true,
+        paidDate: new Date().toISOString().split('T')[0]
+    };
+    
+    if (existingFeeIndex >= 0) {
+        fees[existingFeeIndex] = fee;
+        showAlert('Fee record updated successfully!', 'success');
+    } else {
+        fees.push(fee);
+        showAlert('Fee marked as paid!', 'success');
+    }
+    
+    localStorage.setItem('fees', JSON.stringify(fees));
+    loadFeeStatus();
+    updateDashboard();
+    this.reset();
+    
+    // Reset to current month/year
+    const now = new Date();
+    document.getElementById('feeMonth').value = now.toLocaleString('default', { month: 'long' });
+    document.getElementById('feeYear').value = now.getFullYear();
+});
+
+function loadFeeStatus() {
+    const feeStatusList = document.getElementById('feeStatusList');
+    feeStatusList.innerHTML = '';
+    
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const currentYear = new Date().getFullYear();
+    
+    // Get active students only
+    const activeStudents = students.filter(s => s.status === 'Active');
+    
+    if (activeStudents.length === 0) {
+        feeStatusList.innerHTML = '<p class="text-muted">No active students found.</p>';
+        return;
+    }
+    
+    activeStudents.forEach(student => {
+        const course = courses.find(c => c.id === student.courseId);
+        const courseName = course ? course.name : 'N/A';
+        const courseFee = course ? course.fee : 0;
+        
+        const paidThisMonth = fees.find(fee => 
+            fee.studentId === student.id && 
+            fee.month === currentMonth && 
+            fee.year === currentYear && 
+            fee.paid
+        );
+        
+        const statusBadge = paidThisMonth ? 
+            '<span class="badge bg-success">Paid</span>' : 
+            '<span class="badge bg-danger">Pending</span>';
+        
+        const whatsappMessage = encodeURIComponent(
+            `Dear ${student.name},\n\nFee Reminder from AARADHYA CLASSES\n\nTeacher: Snehal Khairnar\nCourse: ${courseName}\nFee for: ${currentMonth} ${currentYear}\nAmount: ₹${courseFee}\n\nStatus: ${paidThisMonth ? 'Already Paid - Thank you!' : 'Payment Pending'}\n\nPlease pay at your earliest convenience.\n\nThank you!`
+        );
+        
+        const contactNumber = student.parentContact || student.contact;
+        
+        const card = `
+            <div class="card mb-2">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <strong>${student.name}</strong><br>
+                            <small class="text-muted">${courseName}</small>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>₹${courseFee.toLocaleString()}</strong>
+                        </div>
+                        <div class="col-md-2">
+                            ${statusBadge}
+                        </div>
+                        <div class="col-md-2">
+                            <small>${currentMonth} ${currentYear}</small>
+                        </div>
+                        <div class="col-md-3">
+                            <a href="https://wa.me/91${contactNumber}?text=${whatsappMessage}" 
+                               target="_blank" 
+                               class="btn btn-sm btn-whatsapp me-1">
+                                <i class="fab fa-whatsapp"></i> ${paidThisMonth ? 'Receipt' : 'Reminder'}
+                            </a>
+                            ${!paidThisMonth ? `
+                            <button class="btn btn-sm btn-outline-success" onclick="quickPayFee(${student.id}, '${currentMonth}', ${currentYear}, ${courseFee})">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        feeStatusList.innerHTML += card;
+    });
+}
+
+function quickPayFee(studentId, month, year, amount) {
+    const fee = {
+        id: Date.now(),
+        studentId: studentId,
+        month: month,
+        year: year,
+        amount: amount,
+        paid: true,
+        paidDate: new Date().toISOString().split('T')[0]
+    };
+    
+    fees.push(fee);
+    localStorage.setItem('fees', JSON.stringify(fees));
+    loadFeeStatus();
+    updateDashboard();
+    showAlert('Fee marked as paid!', 'success');
+}
+
+// Attendance Management
+document.getElementById('attendanceForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const attendanceDate = document.getElementById('attendanceDate').value;
+    const attendanceStudent = document.getElementById('attendanceStudent').value;
+    const attendanceStatus = document.getElementById('attendanceStatus').value;
+    
+    if (!attendanceDate || !attendanceStudent || !attendanceStatus) {
+        showAlert('Please fill all required fields!', 'warning');
+        return;
+    }
+    
+    // Check if attendance already exists for this student and date
+    const existingIndex = attendance.findIndex(att => 
+        att.studentId === parseInt(attendanceStudent) && att.date === attendanceDate
+    );
+    
+    const attendanceRecord = {
+        id: existingIndex >= 0 ? attendance[existingIndex].id : Date.now(),
+        studentId: parseInt(attendanceStudent),
+        date: attendanceDate,
+        status: attendanceStatus,
+        present: attendanceStatus === 'present'
+    };
+    
+    if (existingIndex >= 0) {
+        attendance[existingIndex] = attendanceRecord;
+        showAlert('Attendance updated successfully!', 'success');
+    } else {
+        attendance.push(attendanceRecord);
+        showAlert('Attendance marked successfully!', 'success');
+    }
+    
+    localStorage.setItem('attendance', JSON.stringify(attendance));
+    loadAttendance();
+    updateDashboard();
+    
+    // Reset form but keep the date
+    document.getElementById('attendanceStudent').value = '';
+    document.getElementById('attendanceStatus').value = '';
+});
+
+function markAllPresent() {
+    const bulkDate = document.getElementById('bulkAttendanceDate').value;
+    if (!bulkDate) {
+        showAlert('Please select a date!', 'warning');
+        return;
+    }
+    
+    const activeStudents = students.filter(s => s.status === 'Active');
+    let markedCount = 0;
+    
+    activeStudents.forEach(student => {
+        const existingIndex = attendance.findIndex(att => 
+            att.studentId === student.id && att.date === bulkDate
+        );
+        
+        const attendanceRecord = {
+            id: existingIndex >= 0 ? attendance[existingIndex].id : Date.now() + Math.random(),
+            studentId: student.id,
+            date: bulkDate,
+            status: 'present',
+            present: true
+        };
+        
+        if (existingIndex >= 0) {
+            attendance[existingIndex] = attendanceRecord;
+        } else {
+            attendance.push(attendanceRecord);
+            markedCount++;
+        }
+    });
+    
+    localStorage.setItem('attendance', JSON.stringify(attendance));
+    loadAttendance();
+    updateDashboard();
+    showAlert(`Marked ${markedCount} students as present for ${formatDate(bulkDate)}!`, 'success');
+}
+
+function loadAttendance() {
+    const attendanceTableBody = document.getElementById('attendanceTableBody');
+    attendanceTableBody.innerHTML = '';
+    
+    // Get filter date
+    const filterDate = document.getElementById('attendanceFilter')?.value;
+    
+    // Filter attendance records
+    let filteredAttendance = attendance;
+    if (filterDate) {
+        filteredAttendance = attendance.filter(att => att.date === filterDate);
+    }
+    
+    // Sort by date (newest first)
+    const sortedAttendance = filteredAttendance.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    if (sortedAttendance.length === 0) {
+        attendanceTableBody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No attendance records found</td></tr>';
+        return;
+    }
+    
+    sortedAttendance.forEach(att => {
+        const student = students.find(s => s.id === att.studentId);
+        const studentName = student ? student.name : 'Unknown';
+        
+        let statusBadge = '';
+        switch(att.status) {
+            case 'present':
+                statusBadge = '<span class="badge bg-success attendance-badge">Present</span>';
+                break;
+            case 'absent':
+                statusBadge = '<span class="badge bg-danger attendance-badge">Absent</span>';
+                break;
+            case 'late':
+                statusBadge = '<span class="badge bg-warning attendance-badge">Late</span>';
+                break;
+            default:
+                statusBadge = '<span class="badge bg-secondary attendance-badge">Unknown</span>';
+        }
+        
+        const row = `
+            <tr>
+                <td>${formatDate(att.date)}</td>
+                <td>${studentName}</td>
+                <td>${statusBadge}</td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteAttendance(${att.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        attendanceTableBody.innerHTML += row;
+    });
+}
+
+function filterAttendance() {
+    loadAttendance();
+}
+
+function deleteAttendance(id) {
+    if (confirm('Delete this attendance record?')) {
+        attendance = attendance.filter(att => att.id !== id);
+        localStorage.setItem('attendance', JSON.stringify(attendance));
+        loadAttendance();
+        updateDashboard();
+        showAlert('Attendance record deleted!', 'warning');
+    }
+}
+
+// Report Generation with Enhanced WhatsApp Sharing
+function generateReport() {
+    const studentId = parseInt(document.getElementById('reportStudent').value);
+    const reportContent = document.getElementById('reportContent');
+    
+    if (!studentId) {
+        showAlert('Please select a student!', 'warning');
+        return;
+    }
+    
+    const student = students.find(s => s.id === studentId);
+    const course = courses.find(c => c.id === student.courseId);
+    
+    // Get student's fees
+    const studentFees = fees.filter(f => f.studentId === studentId);
+    const totalFeesPaid = studentFees.reduce((sum, fee) => sum + fee.amount, 0);
+    
+    // Get student's attendance
+    const studentAttendance = attendance.filter(a => a.studentId === studentId);
+    const presentDays = studentAttendance.filter(a => a.present).length;
+    const totalDays = studentAttendance.length;
+    const absentDays = totalDays - presentDays;
+    const attendancePercentage = totalDays > 0 ? ((presentDays / totalDays) * 100).toFixed(1) : 0;
+    
+    // Get current month fee status
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const currentYear = new Date().getFullYear();
+    const currentMonthFee = fees.find(f => 
+        f.studentId === studentId && 
+        f.month === currentMonth && 
+        f.year === currentYear && 
+        f.paid
+    );
+    
+    // Prepare report data for WhatsApp sharing
+    currentReportData = {
+        student: student,
+        course: course,
+        totalFeesPaid: totalFeesPaid,
+        presentDays: presentDays,
+        absentDays: absentDays,
+        totalDays: totalDays,
+        attendancePercentage: attendancePercentage,
+        currentMonthPaid: !!currentMonthFee
+    };
+    
+    // Generate comprehensive report HTML
+    const report = `
+        <div class="report-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h4><i class="fas fa-user"></i> ${student.name}</h4>
+                    <p class="text-muted mb-0">Comprehensive Student Report</p>
+                </div>
+                <div class="text-end">
+                    <button class="btn btn-whatsapp me-2" onclick="showWhatsappModal()">
+                        <i class="fab fa-whatsapp"></i> Share via WhatsApp
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="printReport()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6><i class="fas fa-info-circle"></i> Student Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-sm table-borderless">
+                                <tr><td><strong>Name:</strong></td><td>${student.name}</td></tr>
+                                <tr><td><strong>Contact:</strong></td><td>${student.contact}</td></tr>
+                                ${student.parentContact ? `<tr><td><strong>Parent Contact:</strong></td><td>${student.parentContact}</td></tr>` : ''}
+                                <tr><td><strong>Course:</strong></td><td>${course.name}</td></tr>
+                                <tr><td><strong>Monthly Fee:</strong></td><td>₹${course.fee.toLocaleString()}</td></tr>
+                                <tr><td><strong>Date of Joining:</strong></td><td>${formatDate(student.joiningDate)}</td></tr>
+                                ${student.leavingDate ? `<tr><td><strong>Date of Leaving:</strong></td><td>${formatDate(student.leavingDate)}</td></tr>` : ''}
+                                <tr><td><strong>Status:</strong></td><td><span class="badge bg-${student.status === 'Active' ? 'success' : 'secondary'}">${student.status}</span></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6><i class="fas fa-calendar-check"></i> Attendance Summary</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center mb-3">
+                                <div class="col-4">
+                                    <div class="stat-card p-2">
+                                        <h4 class="text-primary">${totalDays}</h4>
+                                        <small>Total Classes</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="stat-card p-2">
+                                        <h4 class="text-success">${presentDays}</h4>
+                                        <small>Present</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="stat-card p-2">
+                                        <h4 class="text-danger">${absentDays}</h4>
+                                        <small>Absent</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h5>Attendance: <span class="text-${attendancePercentage >= 75 ? 'success' : 'warning'}">${attendancePercentage}%</span></h5>
+                                <div class="progress">
+                                    <div class="progress-bar bg-${attendancePercentage >= 75 ? 'success' : 'warning'}" 
+                                         role="progressbar" style="width: ${attendancePercentage}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6><i class="fas fa-money-bill"></i> Fee Summary</h6>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Total Fees Paid:</strong> ₹${totalFeesPaid.toLocaleString()}</p>
+                            <p><strong>Total Payments:</strong> ${studentFees.length} months</p>
+                            <p><strong>Current Month (${currentMonth} ${currentYear}):</strong> 
+                                <span class="badge bg-${currentMonthFee ? 'success' : 'danger'}">
+                                    ${currentMonthFee ? 'Paid' : 'Pending'}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6><i class="fas fa-chart-pie"></i> Performance Summary</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <strong>Attendance Grade:</strong> 
+                                <span class="badge bg-${getGrade(attendancePercentage).class}">${getGrade(attendancePercentage).grade}</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Fee Payment:</strong> 
+                                <span class="badge bg-${currentMonthFee ? 'success' : 'warning'}">${currentMonthFee ? 'Up to Date' : 'Needs Attention'}</span>
+                            </div>
+                            <div class="mb-2">
+                                <strong>Overall Status:</strong> 
+                                <span class="badge bg-${student.status === 'Active' && attendancePercentage >= 75 && currentMonthFee ? 'success' : 'warning'}">
+                                    ${student.status === 'Active' && attendancePercentage >= 75 && currentMonthFee ? 'Excellent' : 'Needs Improvement'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            ${studentFees.length > 0 ? `
+            <div class="card">
+                <div class="card-header">
+                    <h6><i class="fas fa-history"></i> Fee Payment History</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Year</th>
+                                    <th>Amount</th>
+                                    <th>Date Paid</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${studentFees.map(fee => `
+                                    <tr>
+                                        <td>${fee.month}</td>
+                                        <td>${fee.year}</td>
+                                        <td>₹${fee.amount.toLocaleString()}</td>
+                                        <td>${formatDate(fee.paidDate)}</td>
+                                        <td><span class="badge bg-success">Paid</span></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            ` : ''}
+        </div>
+        
+        <div class="text-center mt-3 text-muted">
+            <small>Generated on ${new Date().toLocaleDateString()} by AARADHYA CLASSES - Snehal Khairnar</small>
+        </div>
+    `;
+    
+    reportContent.innerHTML = report;
+}
+
+function generateAllReports() {
+    const activeStudents = students.filter(s => s.status === 'Active');
+    if (activeStudents.length === 0) {
+        showAlert('No active students found!', 'warning');
+        return;
+    }
+    
+    const reportContent = document.getElementById('reportContent');
+    let allReports = '<h4 class="mb-4"><i class="fas fa-files"></i> All Student Reports</h4>';
+    
+    activeStudents.forEach((student, index) => {
+        const course = courses.find(c => c.id === student.courseId);
+        const studentAttendance = attendance.filter(a => a.studentId === student.id);
+        const presentDays = studentAttendance.filter(a => a.present).length;
+        const totalDays = studentAttendance.length;
+        const attendancePercentage = totalDays > 0 ? ((presentDays / totalDays) * 100).toFixed(1) : 0;
+        
+        const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+        const currentYear = new Date().getFullYear();
+        const currentMonthFee = fees.find(f => 
+            f.studentId === student.id && 
+            f.month === currentMonth && 
+            f.year === currentYear && 
+            f.paid
+        );
+        
+        allReports += `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <h6>${student.name}</h6>
+                            <small class="text-muted">${course.name}</small>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>Attendance</strong><br>
+                            <span class="text-${attendancePercentage >= 75 ? 'success' : 'warning'}">${attendancePercentage}%</span>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>This Month</strong><br>
+                            <span class="badge bg-${currentMonthFee ? 'success' : 'danger'}">
+                                ${currentMonthFee ? 'Paid' : 'Pending'}
+                            </span>
+                        </div>
+                        <div class="col-md-2">
+                            <strong>Classes</strong><br>
+                            ${presentDays}/${totalDays}
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-sm btn-outline-primary" onclick="document.getElementById('reportStudent').value='${student.id}'; generateReport();">
+                                <i class="fas fa-eye"></i> View Detail
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    // Generate WhatsApp summary for all students
+    const summaryMessage = encodeURIComponent(
+        `AARADHYA CLASSES - All Students Summary\n\nTotal Active Students: ${activeStudents.length}\n\n${activeStudents.map(s => {
+            const course = courses.find(c => c.id === s.courseId);
+            const studentAttendance = attendance.filter(a => a.studentId === s.id);
+            const attendancePercentage = studentAttendance.length > 0 ? ((studentAttendance.filter(a => a.present).length / studentAttendance.length) * 100).toFixed(1) : 0;
+            return `${s.name} - ${course.name} - ${attendancePercentage}% attendance`;
+        }).join('\n')}\n\nGenerated by Snehal Khairnar`
+    );
+    
+    allReports += `
+        <div class="text-center mt-4">
+            <a href="https://wa.me/?text=${summaryMessage}" target="_blank" class="btn btn-whatsapp">
+                <i class="fab fa-whatsapp"></i> Share All Reports Summary
+            </a>
+        </div>
+    `;
+    
+    reportContent.innerHTML = allReports;
+}
+
+// Enhanced WhatsApp sharing functionality
+function showWhatsappModal() {
+    if (!currentReportData) {
+        showAlert('Please generate a report first!', 'warning');
+        return;
+    }
+    
+    const modal = new bootstrap.Modal(document.getElementById('whatsappModal'));
+    
+    // Set up modal buttons
+    document.getElementById('shareToParent').onclick = function() {
+        shareReportToParent();
+        modal.hide();
+    };
+    
+    document.getElementById('shareGeneral').onclick = function() {
+        shareReportGeneral();
+        modal.hide();
+    };
+    
+    modal.show();
+}
+
+function shareReportToParent() {
+    const data = currentReportData;
+    const parentContact = data.student.parentContact || data.student.contact;
+    
+    const detailedReport = `
+🎓 AARADHYA CLASSES - Student Report
+
+👤 Student: ${data.student.name}
+📚 Course: ${data.course.name}
+👩‍🏫 Teacher: Snehal Khairnar
+
+📊 ATTENDANCE SUMMARY:
+✅ Present: ${data.presentDays} days
+❌ Absent: ${data.absentDays} days
+📈 Attendance: ${data.attendancePercentage}%
+🎯 Total Classes: ${data.totalDays}
+
+💰 FEE SUMMARY:
+💵 Total Paid: ₹${data.totalFeesPaid.toLocaleString()}
+📅 Current Month: ${data.currentMonthPaid ? '✅ Paid' : '❌ Pending'}
+💳 Monthly Fee: ₹${data.course.fee.toLocaleString()}
+
+📈 PERFORMANCE:
+📚 Attendance Grade: ${getGrade(data.attendancePercentage).grade}
+💰 Fee Status: ${data.currentMonthPaid ? '✅ Up to Date' : '⚠️ Needs Attention'}
+
+📞 For any queries, please contact:
+Snehal Khairnar - AARADHYA CLASSES
+
+Generated on: ${new Date().toLocaleDateString()}
+    `.trim();
+    
+    const encodedReport = encodeURIComponent(detailedReport);
+    const whatsappUrl = `https://wa.me/91${parentContact}?text=${encodedReport}`;
+    
+    window.open(whatsappUrl, '_blank');
+}
+
+function shareReportGeneral() {
+    const data = currentReportData;
+    
+    const shortReport = `
+🎓 AARADHYA CLASSES Student Report
+
+👤 ${data.student.name}
+📚 ${data.course.name}
+👩‍🏫 Teacher: Snehal Khairnar
+
+📊 Attendance: ${data.attendancePercentage}% (${data.presentDays}/${data.totalDays})
+💰 Fees: ${data.currentMonthPaid ? '✅ Current' : '❌ Pending'}
+
+Performance: ${getGrade(data.attendancePercentage).grade}
+
+Generated: ${new Date().toLocaleDateString()}
+    `.trim();
+    
+    const encodedReport = encodeURIComponent(shortReport);
+    const whatsappUrl = `https://wa.me/?text=${encodedReport}`;
+    
+    window.open(whatsappUrl, '_blank');
+}
+
+function printReport() {
+    const reportContent = document.getElementById('reportContent').innerHTML;
+    const printWindow = window.open('', '', 'height=600,width=800');
+    
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Student Report - AARADHYA CLASSES</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .report-card { background: white !important; }
+                @media print {
+                    .btn { display: none !important; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2>AARADHYA CLASSES</h2>
+                    <p>Managed by Snehal Khairnar</p>
+                </div>
+                ${reportContent}
+            </div>
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+    }, 250);
+}
+
+// Dashboard Updates
+function updateDashboard() {
+    // Update statistics
+    document.getElementById('totalStudents').textContent = students.filter(s => s.status === 'Active').length;
+    document.getElementById('totalCourses').textContent = courses.length;
+    
+    // Calculate pending fees (students who haven't paid this month)
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const currentYear = new Date().getFullYear();
+    
+    const studentsWithPendingFees = students.filter(student => {
+        return student.status === 'Active' && !fees.some(fee => 
+            fee.studentId === student.id && 
+            fee.month === currentMonth && 
+            fee.year === currentYear && 
+            fee.paid
+        );
+    });
+    
+    document.getElementById('pendingFees').textContent = studentsWithPendingFees.length;
+    
+    // Calculate today's attendance
+    const today = new Date().toISOString().split('T')[0];
+    const todayPresent = attendance.filter(att => att.date === today && att.present).length;
+    document.getElementById('todayPresent').textContent = todayPresent;
+    
+    // Update recent activities
+    updateRecentActivities();
+    updateFeeReminders();
+}
+
+function updateRecentActivities() {
+    const recentActivitiesDiv = document.getElementById('recentActivities');
+    if (!recentActivitiesDiv) return;
+    
+    // Get recent fees (last 5)
+    const recentFees = fees.slice(-5).reverse();
+    
+    // Get recent attendance (last 5)
+    const recentAttendance = attendance.slice(-5).reverse();
+    
+    let activities = '';
+    
+    recentFees.forEach(fee => {
+        const student = students.find(s => s.id === fee.studentId);
+        if (student) {
+            activities += `
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-money-bill text-success me-2"></i>
+                    <small>${student.name} paid fee for ${fee.month} ${fee.year}</small>
+                </div>
+            `;
+        }
+    });
+    
+    recentAttendance.forEach(att => {
+        const student = students.find(s => s.id === att.studentId);
+        if (student) {
+            activities += `
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-calendar-check text-${att.present ? 'success' : 'danger'} me-2"></i>
+                    <small>${student.name} marked ${att.status} on ${formatDate(att.date)}</small>
+                </div>
+            `;
+        }
+    });
+    
+    if (!activities) {
+        activities = '<p class="text-muted mb-0">No recent activities</p>';
+    }
+    
+    recentActivitiesDiv.innerHTML = activities;
+}
+
+function updateFeeReminders() {
+    const feeRemindersDiv = document.getElementById('feeReminders');
+    if (!feeRemindersDiv) return;
+    
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const currentYear = new Date().getFullYear();
+    
+    const studentsWithPendingFees = students.filter(student => {
+        return student.status === 'Active' && !fees.some(fee => 
+            fee.studentId === student.id && 
+            fee.month === currentMonth && 
+            fee.year === currentYear && 
+            fee.paid
+        );
+    }).slice(0, 5); // Show only first 5
+    
+    let reminders = '';
+    
+    studentsWithPendingFees.forEach(student => {
+        const course = courses.find(c => c.id === student.courseId);
+        const contactNumber = student.parentContact || student.contact;
+        
+        const whatsappMessage = encodeURIComponent(
+            `Fee Reminder from AARADHYA CLASSES\n\nStudent: ${student.name}\nCourse: ${course.name}\nFee for: ${currentMonth} ${currentYear}\nAmount: ₹${course.fee}\n\nPlease pay soon.\n\nThanks,\nSnehal Khairnar`
+        );
+        
+        reminders += `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    <small><strong>${student.name}</strong></small>
+                    <br><small class="text-muted">₹${course.fee} pending</small>
+                </div>
+                <a href="https://wa.me/91${contactNumber}?text=${whatsappMessage}" 
+                   target="_blank" 
+                   class="btn btn-sm btn-whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
+        `;
+    });
+    
+    if (!reminders) {
+        reminders = '<p class="text-muted mb-0">All fees are up to date! 🎉</p>';
+    }
+    
+    feeRemindersDiv.innerHTML = reminders;
+}
+
+// Utility Functions
+function showAlert(message, type = 'info') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show alert-floating`;
+    alertDiv.innerHTML = `
+        <strong>${type === 'error' ? 'Error!' : type === 'success' ? 'Success!' : type === 'warning' ? 'Warning!' : 'Info:'}</strong>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    document.body.appendChild(alertDiv);
+    
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.parentNode.removeChild(alertDiv);
+        }
+    }, 5000);
+}
+
+function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN');
+}
+
+function getGrade(percentage) {
+    if (percentage >= 90) return { grade: 'A+', class: 'success' };
+    if (percentage >= 80) return { grade: 'A', class: 'success' };
+    if (percentage >= 70) return { grade: 'B+', class: 'info' };
+    if (percentage >= 60) return { grade: 'B', class: 'warning' };
+    if (percentage >= 50) return { grade: 'C', class: 'warning' };
+    return { grade: 'F', class: 'danger' };
+}
+
+// Auto-save data every 30 seconds
+setInterval(() => {
+    localStorage.setItem('students', JSON.stringify(students));
+    localStorage.setItem('courses', JSON.stringify(courses));
+    localStorage.setItem('fees', JSON.stringify(fees));
+    localStorage.setItem('attendance', JSON.stringify(attendance));
+}, 30000);
+
+</script>
+
+</body>
+</html>
